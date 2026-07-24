@@ -102,4 +102,17 @@ curl -X PUT http://localhost:5000/api/courses/1 \
 ```bash
 curl -X DELETE http://localhost:5000/api/courses/1
 ```
+
+## Tests
+
+This project includes integration tests using `jest` and `supertest`.
+
+Install dev dependencies and run tests:
+
+```bash
+npm install
+npm test
+```
+
+See `TESTING.md` for details.
 ```

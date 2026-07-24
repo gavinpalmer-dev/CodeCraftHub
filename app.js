@@ -13,7 +13,8 @@ const app = express();
 const PORT = 5000;
 
 // Store course data in courses.json in the same folder as app.js
-const DATA_FILE = path.join(__dirname, "courses.json");
+// Allow overriding the data file via env for tests: CODECRAFTHUB_DATA_FILE
+const DATA_FILE = process.env.CODECRAFTHUB_DATA_FILE || path.join(__dirname, "courses.json");
 
 // Valid course statuses allowed by the API
 const VALID_STATUSES = ["Not Started", "In Progress", "Completed"];
@@ -399,6 +400,18 @@ app.use((error, req, res, next) => {
   return next(error);
 });
 
+// If the file is executed directly, start the server. When required (by tests),
+// the `app` object is exported so tests can run requests without binding a port.
+if (require.main === module) {
+  ensureDataFileExists();
+  app.listen(PORT, () => {
+    // eslint-disable-next-line no-console
+    console.log(`CodeCraftHub API listening on port ${PORT}`);
+    console.log(`Server URL: http://localhost:${PORT}`);
+    console.log(`Course data file: ${DATA_FILE}`);
+  });
+}
+
 /**
  * Handle routes that do not exist.
  */
@@ -421,14 +434,4 @@ app.use((error, req, res, next) => {
   });
 });
 
-// ============================================================================
-// START SERVER
-// ============================================================================
-
-ensureDataFileExists();
-
-app.listen(PORT, () => {
-  console.log("CodeCraftHub API is running");
-  console.log(`Server URL: http://localhost:${PORT}`);
-  console.log(`Course data file: ${DATA_FILE}`);
-});
+module.exports = app;
