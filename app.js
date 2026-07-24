@@ -156,19 +156,10 @@ function parseCourseId(idParameter) {
 // ============================================================================
 
 /**
- * Home route: useful for quickly checking that the API is running.
+ * Home route: serve the frontend page.
  */
 app.get("/", (req, res) => {
-  res.status(200).json({
-    message: "Welcome to the CodeCraftHub API",
-    endpoints: {
-      createCourse: "POST /api/courses",
-      getAllCourses: "GET /api/courses",
-      getCourseById: "GET /api/courses/:id",
-      updateCourse: "PUT /api/courses/:id",
-      deleteCourse: "DELETE /api/courses/:id",
-    },
-  });
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 /**

@@ -21,10 +21,9 @@ afterAll(() => {
 });
 
 describe('CodeCraftHub API - integration tests', () => {
-  test('GET / returns welcome message and endpoints', async () => {
+  test('GET / serves the homepage HTML', async () => {
     const res = await request(app).get('/').expect(200);
-    expect(res.body).toHaveProperty('message');
-    expect(res.body).toHaveProperty('endpoints');
+    expect(res.text).toContain('<title>CodeCraftHub: Your Learning Management Platform</title>');
   });
 
   test('Creating a course with missing fields returns 400', async () => {
